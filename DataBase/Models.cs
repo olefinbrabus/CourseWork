@@ -32,7 +32,7 @@
         public string DisciplineName { get; set; } // Базовий клас роботи
 
         public override string ToString() // Перевизначений метод для показу усіх атрібутів курсової роботи
-            => base.ToString() + $", Дисциплина - {DisciplineName}";
+            => "Курсова робота: " + base.ToString() + $", Дисциплина - {DisciplineName}";
     }
 
     public class GraduateWork : CreativeWork // Наслідуваний клас дипломної роботи
@@ -40,6 +40,6 @@
         public Degree DegreeLevel { get; set; } // Кваліфікація
 
         public override string ToString() // Перевизначений метод для показу усіх атрібутів дипломної роботи
-            => base.ToString() + $", Рівень - {DegreeLevel}";
+            => "Дипломна робота: " + base.ToString() + $", Рівень - {DegreeLevel}";
     }
 }

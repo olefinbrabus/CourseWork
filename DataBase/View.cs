@@ -21,5 +21,11 @@
             _context.Remove(work);
             _context.SaveChanges();
         }
+
+        public void Update(CreativeWork work)
+        {
+            _context.Update(work);
+            _context.SaveChanges();
+        }
     }
 }

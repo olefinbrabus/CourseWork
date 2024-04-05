@@ -14,21 +14,21 @@ namespace ConsoleStudentCatalogWork
         static void Main(string[] args)
         {
             OutputEncoding = Encoding.UTF8;
-            InputEncoding = Encoding.UTF8;
+
+            WriteLine("Каталог робіт");
 
             InfoWorksUpdate();
-            
             int choice;
-            WriteLine("Каталог робіт");
             do
             {
                 WriteLine($"\n0 - Вийти, 1 - Показати Курсові, 2 - Показати Дипломні, 3 - Добавити роботу, 4 - Оновити роботу, " +
-                          $"\n5 - Пошук Роботи, 6 - Видалити роботу, 7 - Показати за абеткою, 8");
+                          $"\n5 - Пошук Роботи за призвищем студента, 6 - Пошук тем магістерських робіт за роком , 7 - Показати за абеткою," +
+                          $"\n8 - Пошук Роботи за призвищем Вчителя, 9 - Видалити роботу");
                 try
                 {
                     choice = int.Parse(ReadLine());
                 }
-                catch (FormatException e)
+                catch (FormatException)
                 {
                     WriteLine("Введіть число.");
                     choice = -1;
@@ -54,8 +54,6 @@ namespace ConsoleStudentCatalogWork
 
             switch (ch)
             {
-                case 0:
-                    break;
                 case 1:
                     ShowCourse();
                     break;
@@ -65,7 +63,22 @@ namespace ConsoleStudentCatalogWork
                 case 3:
                     AddWork();
                     break;
+                case 4:
+                    ChangeWork();
+                    break;
+                case 5:
+                    SearchBy();
+                    break;
                 case 6:
+                    MasterDegreeSearchByYear();
+                    break;
+                case 7:
+                    ShowABC();
+                    break;
+                case 8:
+                    SearchByTeacher();
+                    break;
+                case 9:
                     Delete();
                     break;
             }
@@ -156,7 +169,7 @@ namespace ConsoleStudentCatalogWork
                     WriteLine("Оберіть Кваліфікацію За номером:");
                     foreach (var degree in degrees)
                         Write($"{degree}, ");
-                    Degree degreeWork = degrees[int.Parse(ReadLine())];
+                    Degree degreeWork = degrees[int.Parse(ReadLine()) - 1];
 
                     //Добавляємо поля які користувач вказав вище для дипломної роботи
                     GraduateWork gradulateWork = new GraduateWork();
@@ -171,7 +184,7 @@ namespace ConsoleStudentCatalogWork
                     dView.Add(gradulateWork);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 WriteLine("Ви ввели замість числел букви");
             }
@@ -213,6 +226,7 @@ namespace ConsoleStudentCatalogWork
             {
                 InfoWorksUpdate();
                 View dView = new();
+
                 WriteLine("Оберіть Id Для видалення:");
                 if (isCourse)
                 {
@@ -237,6 +251,179 @@ namespace ConsoleStudentCatalogWork
             {
                 WriteLine("Id не знайдено.");
             }
+        }
+
+        private static void SearchBy()
+        {
+            WriteLine("Введіть прізвище:");
+
+            List<CreativeWork> works = [.. GraduateWorks, .. CourseWorks];
+            string secondName = ReadLine();
+            works = works.Where(w => w.StudentFullName.Contains(secondName)).ToList();
+
+            foreach (var work in works)
+                WriteLine(work);
+        }
+
+        private static void ShowABC()
+        {
+            WriteLine("Роботи по темі за абеткою:\n");
+            List<CreativeWork> works = [.. GraduateWorks, .. CourseWorks];
+            works = works.OrderBy(w => w.WorkTheme).ToList();
+
+            foreach (var work in works)
+                WriteLine(work.WorkTheme);
+        }
+
+        private static void ChangeWork()
+        {
+            int choice;
+            WriteLine("Оберіть яку роботу Змінити: 1 - Курсова 2 - Дипломна.");
+            try
+            {
+                choice = int.Parse(ReadLine());
+
+                switch (choice)
+                {
+                    case 1:
+                        SendChange();
+                        break;
+                    case 2:
+                        SendChange(isCourse: false);
+                        break;
+                    default:
+                        throw new NotImplementedException("Ви ввели не то число.");
+                }
+            }
+            catch (FormatException)
+            {
+                WriteLine("Ви не ввели число.");
+            }
+            catch (NotImplementedException e)
+            {
+                WriteLine(e.Message);
+            }
+        }
+
+        private static void SendChange(bool isCourse = true)
+        {
+            try
+            {
+                InfoWorksUpdate();
+                View dView = new();
+
+                CourseWork courseWork = new();
+                GraduateWork graduateWork = new();
+
+                WriteLine("Оберіть Id Для Змінення::");
+                if (isCourse)
+                {
+                    ShowCourse();
+
+                     courseWork = dView.ShowDataCourseWork()
+                        .First(c => c.Id == int.Parse(ReadLine()));
+                }
+                else
+                {
+                    ShowGraduate();
+
+                     graduateWork = dView.ShowDataGraduateWork()
+                        .First(c => c.Id == int.Parse(ReadLine()));
+                }
+
+                WriteLine("Введіть тему роботи:");
+                string workTheme = ReadLine();
+                WriteLine("Введіть ПІБ студента:");
+                string studentFullName = ReadLine();
+                WriteLine("Введіть ПІБ Викладача:");
+                string teacherFullName = ReadLine();
+                WriteLine("Введіть групу:");
+                string group = ReadLine();
+                WriteLine("Введіть рік захисту");
+                int year = int.Parse(ReadLine());
+                WriteLine("Введіть Оцінку:");
+                int grade = int.Parse(ReadLine());
+                if (isCourse)
+                {
+                    WriteLine("Оберіть дисціпліну:");
+                    string disciplineName = ReadLine();
+
+                    //Добавляємо поля які користувач вказав вище для курсової роботи
+                    
+                    courseWork.WorkTheme = workTheme;
+                    courseWork.StudentFullName = studentFullName;
+                    courseWork.TeacherFullName = teacherFullName;
+                    courseWork.Group = group;
+                    courseWork.Year = year;
+                    courseWork.Grade = grade;
+                    courseWork.DisciplineName = disciplineName;
+
+                    dView.Update(courseWork);
+                }
+                else
+                {
+                    Degree[] degrees = [Degree.Бакалавр, Degree.Спеціаліст, Degree.Магістр];
+                    WriteLine("Оберіть Кваліфікацію За номером:");
+                    foreach (var degree in degrees)
+                        Write($"{degree}, ");
+                    Degree degreeWork = degrees[int.Parse(ReadLine())];
+
+                    //Добавляємо поля які користувач вказав вище для дипломної роботи
+                    graduateWork.WorkTheme = workTheme;
+                    graduateWork.StudentFullName = studentFullName;
+                    graduateWork.TeacherFullName = teacherFullName;
+                    graduateWork.Group = group;
+                    graduateWork.Year = year;
+                    graduateWork.Grade = grade;
+                    graduateWork.DegreeLevel = degreeWork;
+
+                    dView.Update(graduateWork);
+                }
+
+            }
+            catch(FormatException)
+            {
+                WriteLine("Ви ввели букву, а не число.");
+            }
+            catch
+            {
+                WriteLine("Id не знайдено.");
+            }
+        }
+
+        private static void MasterDegreeSearchByYear()
+        {
+            WriteLine("Оберіть число:");
+            InfoWorksUpdate();
+            int year;
+            try
+            {
+                year = int.Parse(ReadLine());
+            }
+            catch (FormatException)
+            {
+                WriteLine("Ви ввели букву, а не число.");
+                return;
+            }
+
+            GraduateWork[] work = GraduateWorks
+                .Where(w => w.DegreeLevel == Degree.Магістр && w.Year == year)
+                .ToArray();
+
+            foreach (var graduateWork in work) 
+                WriteLine(graduateWork);
+        }
+
+        private static void SearchByTeacher()
+        {
+            WriteLine("Введіть прізвище:");
+
+            List<CreativeWork> works = [.. GraduateWorks, .. CourseWorks];
+            string secondName = ReadLine();
+            works = works.Where(w => w.TeacherFullName.Contains(secondName)).ToList();
+
+            foreach (var work in works)
+                WriteLine(work);
         }
     }
 }
