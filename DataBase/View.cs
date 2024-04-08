@@ -1,4 +1,6 @@
-﻿namespace DataBase
+﻿using System.Text.RegularExpressions;
+
+namespace DataBase
 {
     public class View
     {

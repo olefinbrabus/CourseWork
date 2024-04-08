@@ -19,7 +19,7 @@
 
         public string Group  { get; set; } // Група студента
 
-        public int Year  { get; set; } // Рік захисту
+        public int Year { get; set; } // Рік захисту
 
         public int Grade { get; set; } // Оцінка
 

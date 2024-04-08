@@ -1,5 +1,6 @@
 ﻿using DataBase;
 using System.Text;
+using System.Text.RegularExpressions;
 using static System.Console;
 
 namespace ConsoleStudentCatalogWork
@@ -161,7 +162,9 @@ namespace ConsoleStudentCatalogWork
                     courseWork.Grade = grade;
                     courseWork.DisciplineName = disciplineName;
 
-                    dView.Add(courseWork);
+                    if (ValidateWork(courseWork))
+                        dView.Add(courseWork);
+                    else throw new InvalidOperationException("Неправильна форма курсової роботи");
                 }
                 else
                 {
@@ -172,16 +175,18 @@ namespace ConsoleStudentCatalogWork
                     Degree degreeWork = degrees[int.Parse(ReadLine()) - 1];
 
                     //Добавляємо поля які користувач вказав вище для дипломної роботи
-                    GraduateWork gradulateWork = new GraduateWork();
-                    gradulateWork.WorkTheme = workTheme;
-                    gradulateWork.StudentFullName = studentFullName;
-                    gradulateWork.TeacherFullName = teacherFullName;
-                    gradulateWork.Group = group;
-                    gradulateWork.Year = year;
-                    gradulateWork.Grade = grade;
-                    gradulateWork.DegreeLevel = degreeWork;
+                    GraduateWork graduateWork = new GraduateWork();
+                    graduateWork.WorkTheme = workTheme;
+                    graduateWork.StudentFullName = studentFullName;
+                    graduateWork.TeacherFullName = teacherFullName;
+                    graduateWork.Group = group;
+                    graduateWork.Year = year;
+                    graduateWork.Grade = grade;
+                    graduateWork.DegreeLevel = degreeWork;
 
-                    dView.Add(gradulateWork);
+                    if (ValidateWork(graduateWork))
+                        dView.Add(graduateWork);
+                    else throw new InvalidOperationException("Неправильна форма курсової роботи");
                 }
             }
             catch (Exception)
@@ -320,14 +325,14 @@ namespace ConsoleStudentCatalogWork
                 {
                     ShowCourse();
 
-                     courseWork = dView.ShowDataCourseWork()
+                    courseWork = dView.ShowDataCourseWork()
                         .First(c => c.Id == int.Parse(ReadLine()));
                 }
                 else
                 {
                     ShowGraduate();
 
-                     graduateWork = dView.ShowDataGraduateWork()
+                    graduateWork = dView.ShowDataGraduateWork()
                         .First(c => c.Id == int.Parse(ReadLine()));
                 }
 
@@ -349,7 +354,7 @@ namespace ConsoleStudentCatalogWork
                     string disciplineName = ReadLine();
 
                     //Добавляємо поля які користувач вказав вище для курсової роботи
-                    
+
                     courseWork.WorkTheme = workTheme;
                     courseWork.StudentFullName = studentFullName;
                     courseWork.TeacherFullName = teacherFullName;
@@ -357,8 +362,9 @@ namespace ConsoleStudentCatalogWork
                     courseWork.Year = year;
                     courseWork.Grade = grade;
                     courseWork.DisciplineName = disciplineName;
-
-                    dView.Update(courseWork);
+                    if (ValidateWork(courseWork))
+                        dView.Update(courseWork);
+                    else throw new InvalidOperationException("Неправильна форма курсової роботи");
                 }
                 else
                 {
@@ -376,14 +382,19 @@ namespace ConsoleStudentCatalogWork
                     graduateWork.Year = year;
                     graduateWork.Grade = grade;
                     graduateWork.DegreeLevel = degreeWork;
-
-                    dView.Update(graduateWork);
+                    if (ValidateWork(graduateWork))
+                        dView.Update(graduateWork);
+                    else throw new InvalidOperationException("Неправильна форма курсової роботи");
                 }
 
             }
-            catch(FormatException)
+            catch (FormatException)
             {
                 WriteLine("Ви ввели букву, а не число.");
+            }
+            catch (InvalidOperationException e)
+            {
+                WriteLine(e.Message);
             }
             catch
             {
@@ -424,6 +435,16 @@ namespace ConsoleStudentCatalogWork
 
             foreach (var work in works)
                 WriteLine(work);
+        }
+
+        private static bool ValidateWork(CreativeWork work)
+        {
+            string pattern = @"^[A-Za-z\u0400-\u04FF\s]+$";
+            return Regex.IsMatch(work.StudentFullName, pattern) &&
+                Regex.IsMatch(work.TeacherFullName, pattern) &&
+                Regex.IsMatch(work.WorkTheme, pattern) &&
+                work.Year > 1970 || work.Year < 2024 &&
+                work.Grade < 0 || work.Grade > 100;
         }
     }
 }
