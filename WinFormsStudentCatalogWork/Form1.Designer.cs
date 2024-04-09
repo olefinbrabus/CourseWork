@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             lvWorks = new ListView();
             id = new ColumnHeader();
             theme = new ColumnHeader();
@@ -42,7 +43,6 @@
             bAdd = new Button();
             lbFilter = new ListBox();
             label1 = new Label();
-            bDelete = new Button();
             SuspendLayout();
             // 
             // lvWorks
@@ -50,7 +50,7 @@
             lvWorks.Columns.AddRange(new ColumnHeader[] { id, theme, student, teacher, group, year, discipline, degree });
             lvWorks.Location = new Point(182, 41);
             lvWorks.Name = "lvWorks";
-            lvWorks.Size = new Size(906, 270);
+            lvWorks.Size = new Size(1004, 264);
             lvWorks.TabIndex = 0;
             lvWorks.UseCompatibleStateImageBehavior = false;
             lvWorks.View = View.Details;
@@ -70,41 +70,46 @@
             // 
             student.Text = "ПІБ Студента";
             student.TextAlign = HorizontalAlignment.Center;
-            student.Width = 120;
+            student.Width = 200;
             // 
             // teacher
             // 
             teacher.Text = "ПІБ Викладача";
-            teacher.Width = 120;
+            teacher.TextAlign = HorizontalAlignment.Center;
+            teacher.Width = 200;
             // 
             // group
             // 
             group.Text = "Група";
+            group.TextAlign = HorizontalAlignment.Center;
             // 
             // year
             // 
             year.Text = "рік";
+            year.TextAlign = HorizontalAlignment.Center;
             // 
             // discipline
             // 
             discipline.Text = "Дісціплина";
-            discipline.Width = 120;
+            discipline.TextAlign = HorizontalAlignment.Center;
+            discipline.Width = 200;
             // 
             // degree
             // 
             degree.Text = "кваліфікація";
+            degree.TextAlign = HorizontalAlignment.Center;
             degree.Width = 120;
             // 
             // tbSearch
             // 
             tbSearch.Location = new Point(182, 12);
             tbSearch.Name = "tbSearch";
-            tbSearch.Size = new Size(512, 23);
+            tbSearch.Size = new Size(910, 23);
             tbSearch.TabIndex = 1;
             // 
             // bSearch
             // 
-            bSearch.Location = new Point(700, 12);
+            bSearch.Location = new Point(1098, 11);
             bSearch.Name = "bSearch";
             bSearch.Size = new Size(88, 23);
             bSearch.TabIndex = 2;
@@ -113,11 +118,12 @@
             // 
             // bAdd
             // 
+            bAdd.Font = new Font("Segoe UI", 20F);
             bAdd.Location = new Point(12, 171);
             bAdd.Name = "bAdd";
-            bAdd.Size = new Size(164, 67);
+            bAdd.Size = new Size(164, 134);
             bAdd.TabIndex = 3;
-            bAdd.Text = "Добавити або змінити...";
+            bAdd.Text = "Управляти Каталогом";
             bAdd.UseVisualStyleBackColor = true;
             bAdd.Click += bAdd_Click;
             // 
@@ -140,22 +146,11 @@
             label1.TabIndex = 5;
             label1.Text = "Пошук за:";
             // 
-            // bDelete
-            // 
-            bDelete.Location = new Point(12, 244);
-            bDelete.Name = "bDelete";
-            bDelete.Size = new Size(164, 67);
-            bDelete.TabIndex = 8;
-            bDelete.Text = "Видалити";
-            bDelete.UseVisualStyleBackColor = true;
-            bDelete.Click += bDelete_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1100, 317);
-            Controls.Add(bDelete);
+            ClientSize = new Size(1198, 317);
             Controls.Add(label1);
             Controls.Add(lbFilter);
             Controls.Add(bAdd);
@@ -163,6 +158,7 @@
             Controls.Add(tbSearch);
             Controls.Add(lvWorks);
             Font = new Font("Segoe UI", 9F);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "Каталог студентських робіт";
             ResumeLayout(false);
@@ -177,7 +173,6 @@
         private Button bAdd;
         private ListBox lbFilter;
         private Label label1;
-        private Button bDelete;
         private ColumnHeader id;
         private ColumnHeader theme;
         private ColumnHeader student;

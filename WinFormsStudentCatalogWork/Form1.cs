@@ -4,9 +4,9 @@ namespace WinFormsStudentCatalogWork
 {
     public partial class Form1 : Form
     {
-        private LinkedList<CourseWork> _courseWork;
+        public LinkedList<CourseWork> _courseWork;
 
-        private LinkedList<GraduateWork> _graduateWorks;
+        public LinkedList<GraduateWork> _graduateWorks;
 
         public Form1()
         {
@@ -21,7 +21,7 @@ namespace WinFormsStudentCatalogWork
 
         }
 
-        public void InfoWorksUpdate()
+        private void InfoWorksUpdate()
         {
             DataBase.View dView = new();
 
@@ -43,7 +43,7 @@ namespace WinFormsStudentCatalogWork
                 lvi.SubItems.Add(work.StudentFullName);
                 lvi.SubItems.Add(work.TeacherFullName);
                 lvi.SubItems.Add(work.Group);
-                lvi.SubItems.Add($"{work.StudentFullName}");
+                lvi.SubItems.Add($"{work.Year}");
                 lvi.SubItems.Add(work.DisciplineName);
                 lvi.SubItems.Add("");
 
@@ -61,7 +61,7 @@ namespace WinFormsStudentCatalogWork
                 lvi.SubItems.Add(work.StudentFullName);
                 lvi.SubItems.Add(work.TeacherFullName);
                 lvi.SubItems.Add(work.Group);
-                lvi.SubItems.Add($"{work.StudentFullName}");
+                lvi.SubItems.Add($"{work.Year}");
                 lvi.SubItems.Add("");
                 lvi.SubItems.Add($"{work.DegreeLevel}");
 
@@ -74,11 +74,9 @@ namespace WinFormsStudentCatalogWork
 
         private void bAdd_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void bDelete_Click(object sender, EventArgs e)
-        {
+            ControlWorks works = new();
+            if(works.ShowDialog() == DialogResult.OK) 
+                ListViewInit();
 
         }
     }
