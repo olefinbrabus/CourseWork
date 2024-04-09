@@ -29,7 +29,7 @@
 
     public class CourseWork : CreativeWork // Наслідуваний клас курсової роботи
     {
-        public string DisciplineName { get; set; } // Базовий клас роботи
+        public string DisciplineName { get; set; } // Дисципліна
 
         public override string ToString() // Перевизначений метод для показу усіх атрібутів курсової роботи
             => "Курсова робота: " + base.ToString() + $", Дисциплина - {DisciplineName}";

@@ -18,6 +18,8 @@ namespace DataBase
         public List<GraduateWork> ShowDataGraduateWork()
             => _context.graduateWorks.Select(cw => cw).ToList();
 
+        
+
         public void Delete(CreativeWork work)
         {
             _context.Remove(work);
