@@ -46,16 +46,16 @@
             nudYear = new NumericUpDown();
             nudGrade = new NumericUpDown();
             label6 = new Label();
-            tabControl1 = new TabControl();
+            tcWorks = new TabControl();
             tabPage1 = new TabPage();
-            tabPage2 = new TabPage();
-            label7 = new Label();
-            label8 = new Label();
-            lbDegrees = new ListBox();
             tbDiscipline = new TextBox();
+            label7 = new Label();
+            tabPage2 = new TabPage();
+            lbDegrees = new ListBox();
+            label8 = new Label();
             ((System.ComponentModel.ISupportInitialize)nudYear).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudGrade).BeginInit();
-            tabControl1.SuspendLayout();
+            tcWorks.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
             SuspendLayout();
@@ -68,6 +68,7 @@
             lbWorks.Name = "lbWorks";
             lbWorks.Size = new Size(1354, 214);
             lbWorks.TabIndex = 0;
+            lbWorks.SelectedIndexChanged += lbWorks_SelectedIndexChanged;
             // 
             // bAdd
             // 
@@ -220,15 +221,15 @@
             label6.TabIndex = 16;
             label6.Text = "Оцінка:";
             // 
-            // tabControl1
+            // tcWorks
             // 
-            tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Location = new Point(511, 82);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(267, 107);
-            tabControl1.TabIndex = 18;
+            tcWorks.Controls.Add(tabPage1);
+            tcWorks.Controls.Add(tabPage2);
+            tcWorks.Location = new Point(511, 82);
+            tcWorks.Name = "tcWorks";
+            tcWorks.SelectedIndex = 0;
+            tcWorks.Size = new Size(267, 107);
+            tcWorks.TabIndex = 18;
             // 
             // tabPage1
             // 
@@ -243,6 +244,23 @@
             tabPage1.Text = "Курсова робота";
             tabPage1.UseVisualStyleBackColor = true;
             // 
+            // tbDiscipline
+            // 
+            tbDiscipline.Location = new Point(6, 44);
+            tbDiscipline.Name = "tbDiscipline";
+            tbDiscipline.Size = new Size(247, 29);
+            tbDiscipline.TabIndex = 20;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 12F);
+            label7.Location = new Point(3, 11);
+            label7.Name = "label7";
+            label7.Size = new Size(97, 21);
+            label7.TabIndex = 19;
+            label7.Text = "Дисципліна:";
+            // 
             // tabPage2
             // 
             tabPage2.Controls.Add(lbDegrees);
@@ -256,15 +274,15 @@
             tabPage2.Text = "Дипломна робота";
             tabPage2.UseVisualStyleBackColor = true;
             // 
-            // label7
+            // lbDegrees
             // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 12F);
-            label7.Location = new Point(3, 11);
-            label7.Name = "label7";
-            label7.Size = new Size(97, 21);
-            label7.TabIndex = 19;
-            label7.Text = "Дисципліна:";
+            lbDegrees.Font = new Font("Segoe UI", 8F);
+            lbDegrees.FormattingEnabled = true;
+            lbDegrees.ItemHeight = 13;
+            lbDegrees.Location = new Point(115, 6);
+            lbDegrees.Name = "lbDegrees";
+            lbDegrees.Size = new Size(138, 69);
+            lbDegrees.TabIndex = 21;
             // 
             // label8
             // 
@@ -276,29 +294,12 @@
             label8.TabIndex = 20;
             label8.Text = "Кваліфікація:";
             // 
-            // lbDegrees
-            // 
-            lbDegrees.Font = new Font("Segoe UI", 8F);
-            lbDegrees.FormattingEnabled = true;
-            lbDegrees.ItemHeight = 13;
-            lbDegrees.Location = new Point(115, 6);
-            lbDegrees.Name = "lbDegrees";
-            lbDegrees.Size = new Size(138, 69);
-            lbDegrees.TabIndex = 21;
-            // 
-            // tbDiscipline
-            // 
-            tbDiscipline.Location = new Point(6, 44);
-            tbDiscipline.Name = "tbDiscipline";
-            tbDiscipline.Size = new Size(247, 29);
-            tbDiscipline.TabIndex = 20;
-            // 
             // ControlWorks
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1381, 450);
-            Controls.Add(tabControl1);
+            Controls.Add(tcWorks);
             Controls.Add(nudGrade);
             Controls.Add(label6);
             Controls.Add(nudYear);
@@ -321,7 +322,7 @@
             Text = "ControlWorks";
             ((System.ComponentModel.ISupportInitialize)nudYear).EndInit();
             ((System.ComponentModel.ISupportInitialize)nudGrade).EndInit();
-            tabControl1.ResumeLayout(false);
+            tcWorks.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
@@ -349,7 +350,7 @@
         private NumericUpDown nudYear;
         private NumericUpDown nudGrade;
         private Label label6;
-        private TabControl tabControl1;
+        private TabControl tcWorks;
         private TabPage tabPage1;
         private TextBox tbDiscipline;
         private Label label7;
