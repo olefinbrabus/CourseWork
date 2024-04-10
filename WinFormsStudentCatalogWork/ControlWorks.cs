@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
+﻿using DataBase;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Accessibility;
-using DataBase;
 
 namespace WinFormsStudentCatalogWork
 {
@@ -33,14 +22,11 @@ namespace WinFormsStudentCatalogWork
             lbWorks.Items.AddRange(GraduateWorks.ToArray());
 
             lbDegrees.Items.Clear();
-            Degree[] degrees = { Degree.Бакалавр, Degree.Спеціаліст, Degree.Магістр };
+            Degree[] degrees = [Degree.Бакалавр, Degree.Спеціаліст, Degree.Магістр];
             foreach (var degree in degrees)
                 lbDegrees.Items.Add($"{degree}");
 
             nudYear.Text = $"{nudYear.Maximum}";
-
-
-
         }
 
         public static void InfoWorksUpdate()
@@ -63,7 +49,7 @@ namespace WinFormsStudentCatalogWork
             }
         }
 
-        private CreativeWork CreateWork()
+        private CreativeWork? CreateWork()
         {
             if (!ValidateGeneralWork())
             {
@@ -73,10 +59,10 @@ namespace WinFormsStudentCatalogWork
 
             CreativeWork work = CreateGeneralWork();
 
-            if (IsCouseWork())
+            if (IsCourseWork())
             {
                 CourseWork course = (CourseWork)work;
-                if (!IsMatchingDescipline())
+                if (!IsMatchingDiscipline())
                 {
                     MessageBox.Show("Ви не правильно ввели дисципліну.");
                     return null;
@@ -86,27 +72,23 @@ namespace WinFormsStudentCatalogWork
                 return course;
 
             }
-            else
+            GraduateWork graduate = (GraduateWork)work;
+            Degree? degree = getDegree();
+            if (degree == null)
             {
-                GraduateWork graduate = (GraduateWork)work;
-
-                Degree degree = getDegree();
-                if (degree == null)
-                {
-                    MessageBox.Show("Ви не ввели кваліфікацію.");
-                    return null;
-                }
-                graduate.DegreeLevel = degree;
-
-                return graduate;
+                MessageBox.Show("Ви не ввели кваліфікацію.");
+                return null;
             }
+            graduate.DegreeLevel = (Degree)degree;
+
+            return graduate;
         }
 
         private bool ValidateGeneralWork()
         {
             string pattern = @"[\u0410-\u044F\u0456\u0457\u0041-\u005A\u0061-\u007A\s]+";
 
-            string[] toCheck = { tbTheme.Text, tbStudent.Text, tbTeacher.Text };
+            string[] toCheck = [tbTheme.Text, tbStudent.Text, tbTeacher.Text];
 
             foreach (string text in toCheck)
                 if (!Regex.IsMatch(text, pattern))
@@ -117,7 +99,7 @@ namespace WinFormsStudentCatalogWork
 
         private CreativeWork CreateGeneralWork()
         {
-            if (IsCouseWork())
+            if (IsCourseWork())
                 return new CourseWork
                 {
                     WorkTheme = tbTheme.Text,
@@ -138,12 +120,12 @@ namespace WinFormsStudentCatalogWork
             };
         }
 
-        private bool IsCouseWork() => tcWorks.SelectedIndex == 0;
+        private bool IsCourseWork() => tcWorks.SelectedIndex == 0;
 
-        private bool IsMatchingDescipline() => Regex.IsMatch(tbDiscipline.Text,
+        private bool IsMatchingDiscipline() => Regex.IsMatch(tbDiscipline.Text,
             @"[\u0410-\u044F\u0456\u0457\u0041-\u005A\u0061-\u007A\s]+");
 
-        private Degree getDegree()
+        private Degree? getDegree()
         {
             switch (lbDegrees.SelectedIndex)
             {
@@ -154,7 +136,7 @@ namespace WinFormsStudentCatalogWork
                 case 2:
                     return Degree.Магістр;
                 default:
-                    throw new NotImplementedException("Ви не ввели Кваліфікацію.");
+                    return null;
             }
         }
 
@@ -162,10 +144,69 @@ namespace WinFormsStudentCatalogWork
         {
             InfoWorksUpdate();
 
+            DataBase.View dView = new();
+            
+            bool isCourse = IndexWork(out int index);
+            if (!ValidateGeneralWork())
+                return;
 
+            if (isCourse != IsCourseWork())
+            {
+                string whatWork = isCourse ? "Курсову" : "Дипломну";
+                var result = MessageBox.Show(
+                    $"Ви впевнені, що хочете видалити {whatWork} роботу та перемістити в іншу категорію?",
+                    "Змінити роботу",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    bDelete_Click(sender, e);
+                    bAdd_Click(sender, e);
+                }
+                return;
+            }
+
+            CourseWork courseWork = new();
+            GraduateWork graduateWork = new();
+            
+
+            if (isCourse)
+            {
+
+                courseWork = dView.ShowDataCourseWork()
+                    .First(c => c.Id == CourseWorks[index].Id);
+                
+                CopyWorkToSend(courseWork);
+
+                if (!IsMatchingDiscipline())
+                {
+                    MessageBox.Show("Ви не правильно ввели дисципліну.");
+                    return;
+                }
+
+                courseWork.DisciplineName = tbDiscipline.Text;
+            }
+            else
+            {
+                graduateWork = dView.ShowDataGraduateWork()
+                    .First(c => c.Id == GraduateWorks[index].Id);
+
+                CopyWorkToSend(courseWork);
+
+                Degree? degree = getDegree();
+                if (degree == null)
+                {
+                    MessageBox.Show("Ви не ввели кваліфікацію.");
+                    return;
+                }
+                graduateWork.DegreeLevel = (Degree)degree;
+            }
+            dView.Update(isCourse ? courseWork : graduateWork);
+            ShowListBoxWorks();
         }
 
-        private bool IndexToWork(out int index)
+        private bool IndexWork(out int index)
         {
             index = lbWorks.SelectedIndex;
             if (index > CourseWorks.Count - 1)
@@ -174,6 +215,18 @@ namespace WinFormsStudentCatalogWork
                 return false;
             }
             return true;
+        }
+
+        private void CopyWorkToSend(CreativeWork toCopyWork)
+        {
+            CreativeWork fromCopyWork = CreateGeneralWork();
+            toCopyWork.WorkTheme = fromCopyWork.WorkTheme;
+            toCopyWork.StudentFullName = fromCopyWork.StudentFullName;
+            toCopyWork.TeacherFullName = fromCopyWork.TeacherFullName;
+            toCopyWork.Group = fromCopyWork.Group;
+            toCopyWork.Year = fromCopyWork.Year;
+            toCopyWork.Grade = fromCopyWork.Grade;
+
         }
 
         private void bClear_Click(object sender, EventArgs e)
@@ -189,27 +242,26 @@ namespace WinFormsStudentCatalogWork
 
             lbDegrees.SelectedIndex = -1;
             lbWorks.SelectedIndex = -1;
-
-
-
         }
 
         private void bDelete_Click(object sender, EventArgs e)
         {
             DataBase.View dView = new();
 
-            bool isCourse = IndexToWork(out int index);
-
+            bool isCourse = IndexWork(out int index);
             if (index == -1)
                 return;
-            var result = MessageBox.Show("Ви впевнені, що хочете видалити з каталогу цю роботу?",
-            "Видалити роботу",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Question);
 
-            if (result == DialogResult.No)
-                return;
+            Button clickButton = (Button)sender;
+            if (clickButton.Name == "bDelete"){
+                var result = MessageBox.Show("Ви впевнені, що хочете видалити з каталогу цю роботу?",
+                    "Видалити роботу",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
 
+                if (result == DialogResult.No)
+                    return;
+            }
             if (isCourse)
             {
                 CourseWork work = CourseWorks[index];
@@ -228,7 +280,7 @@ namespace WinFormsStudentCatalogWork
             
             DataBase.View dView = new();
 
-            bool isCourse = IndexToWork(out int index);
+            bool isCourse = IndexWork(out int index);
             CreativeWork work;
             if (index == -1)
                 return;
@@ -272,8 +324,6 @@ namespace WinFormsStudentCatalogWork
                         lbDegrees.SelectedIndex = 2;
                         break;
                 }
-
-
             }
         }
     }

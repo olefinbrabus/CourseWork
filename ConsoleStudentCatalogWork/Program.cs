@@ -282,11 +282,10 @@ namespace ConsoleStudentCatalogWork
 
         private static void ChangeWork()
         {
-            int choice;
             WriteLine("Оберіть яку роботу Змінити: 1 - Курсова 2 - Дипломна.");
             try
             {
-                choice = int.Parse(ReadLine());
+                int choice = int.Parse(ReadLine());
 
                 switch (choice)
                 {
