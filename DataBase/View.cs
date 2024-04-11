@@ -2,31 +2,29 @@
 
 namespace DataBase
 {
-    public class View
+    public class View  // Інтерфейс для доступа к базі даних
     {
-        private Context _context = new();
+        private readonly Context _context = new();  // Доступ до бази даних
 
-        public void Add(CreativeWork work)
+        public void Add(CreativeWork work)  // Добавити роботу
         {
             _context.Add(work);
             _context.SaveChanges();
         }
 
         public List<CourseWork> ShowDataCourseWork()
-            => _context.courseWorks.Select(cw => cw).ToList();
+            => _context.courseWorks.Select(cw => cw).ToList();  // Данні про курсові роботи
 
         public List<GraduateWork> ShowDataGraduateWork()
-            => _context.graduateWorks.Select(cw => cw).ToList();
+            => _context.graduateWorks.Select(cw => cw).ToList();  // Данні про дипломні роботи
 
-        
-
-        public void Delete(CreativeWork work)
+        public void Delete(CreativeWork work)  // Видалити роботу
         {
             _context.Remove(work);
             _context.SaveChanges();
         }
 
-        public void Update(CreativeWork work)
+        public void Update(CreativeWork work)  //  Змінити роботу
         {
             _context.Update(work);
             _context.SaveChanges();

@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBase", "DataBase\DataBa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleStudentCatalogWork", "ConsoleStudentCatalogWork\ConsoleStudentCatalogWork.csproj", "{9A94887B-78A7-4450-A25D-1B90726B2CE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsStudentCatalogWork", "WinFormsStudentCatalogWork\WinFormsStudentCatalogWork.csproj", "{5D3F6548-7EF1-48E5-9653-7757C7D4F2F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsStudentCatalogWork", "WinFormsStudentCatalogWork\WinFormsStudentCatalogWork.csproj", "{5D3F6548-7EF1-48E5-9653-7757C7D4F2F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elements", "elements", "{DB689FD7-0D9F-456B-BC9D-A4056C9AB672}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -14,7 +14,7 @@ namespace WinFormsStudentCatalogWork
             ShowListBoxWorks();
         }
 
-        private void ShowListBoxWorks()
+        private void ShowListBoxWorks() // Показати поля у ListBox
         {
             InfoWorksUpdate();
             lbWorks.Items.Clear();
@@ -29,7 +29,7 @@ namespace WinFormsStudentCatalogWork
             nudYear.Text = $"{nudYear.Maximum}";
         }
 
-        public static void InfoWorksUpdate()
+        public static void InfoWorksUpdate() // Оновлення інформації 
         {
             DataBase.View dView = new();
 
@@ -37,7 +37,7 @@ namespace WinFormsStudentCatalogWork
             GraduateWorks = dView.ShowDataGraduateWork();
         }
 
-        private void bAdd_Click(object sender, EventArgs e)
+        private void bAdd_Click(object sender, EventArgs e) // Добавлення нової роботи
         {
             CreativeWork? work = CreateWork();
 
@@ -49,7 +49,7 @@ namespace WinFormsStudentCatalogWork
             }
         }
 
-        private CreativeWork? CreateWork()
+        private CreativeWork? CreateWork()  // Створення роботи за обраним TabControl
         {
             if (!ValidateGeneralWork())
             {
@@ -84,7 +84,7 @@ namespace WinFormsStudentCatalogWork
             return graduate;
         }
 
-        private bool ValidateGeneralWork()
+        private bool ValidateGeneralWork()  // Валідування загальної роботи
         {
             string pattern = @"[\u0410-\u044F\u0456\u0457\u0041-\u005A\u0061-\u007A\s]+";
 
@@ -97,7 +97,7 @@ namespace WinFormsStudentCatalogWork
             return true;
         }
 
-        private CreativeWork CreateGeneralWork()
+        private CreativeWork CreateGeneralWork()  // Створення загальної роботи за полями які вказав користувач
         {
             if (IsCourseWork())
                 return new CourseWork
@@ -120,12 +120,12 @@ namespace WinFormsStudentCatalogWork
             };
         }
 
-        private bool IsCourseWork() => tcWorks.SelectedIndex == 0;
+        private bool IsCourseWork() => tcWorks.SelectedIndex == 0;  // Перевірка обрану роботу
 
-        private bool IsMatchingDiscipline() => Regex.IsMatch(tbDiscipline.Text,
+        private bool IsMatchingDiscipline() => Regex.IsMatch(tbDiscipline.Text,  // Валідування дисципліни
             @"[\u0410-\u044F\u0456\u0457\u0041-\u005A\u0061-\u007A\s]+");
 
-        private Degree? getDegree()
+        private Degree? getDegree()  // Обрання кваліфікації. Якщо користувач не обрав кваліфікацію то операція скасована
         {
             switch (lbDegrees.SelectedIndex)
             {
@@ -140,7 +140,7 @@ namespace WinFormsStudentCatalogWork
             }
         }
 
-        private void bChange_Click(object sender, EventArgs e)
+        private void bChange_Click(object sender, EventArgs e)  // Зміна роботи. Роботу можно змінити на інший тип або просто змінити поля
         {
             InfoWorksUpdate();
 
@@ -177,7 +177,7 @@ namespace WinFormsStudentCatalogWork
                 courseWork = dView.ShowDataCourseWork()
                     .First(c => c.Id == CourseWorks[index].Id);
                 
-                CopyWorkToSend(courseWork);
+                CopyGeneralWorkToSend(courseWork);
 
                 if (!IsMatchingDiscipline())
                 {
@@ -192,7 +192,7 @@ namespace WinFormsStudentCatalogWork
                 graduateWork = dView.ShowDataGraduateWork()
                     .First(c => c.Id == GraduateWorks[index].Id);
 
-                CopyWorkToSend(courseWork);
+                CopyGeneralWorkToSend(courseWork);
 
                 Degree? degree = getDegree();
                 if (degree == null)
@@ -206,7 +206,7 @@ namespace WinFormsStudentCatalogWork
             ShowListBoxWorks();
         }
 
-        private bool IndexWork(out int index)
+        private bool IndexWork(out int index)  // Індексація роботи та перевірка на курсову або дипломну роботу
         {
             index = lbWorks.SelectedIndex;
             if (index > CourseWorks.Count - 1)
@@ -217,7 +217,7 @@ namespace WinFormsStudentCatalogWork
             return true;
         }
 
-        private void CopyWorkToSend(CreativeWork toCopyWork)
+        private void CopyGeneralWorkToSend(CreativeWork toCopyWork)  // Копіювання полів з однієї загальної роботи в іншу
         {
             CreativeWork fromCopyWork = CreateGeneralWork();
             toCopyWork.WorkTheme = fromCopyWork.WorkTheme;
@@ -229,7 +229,7 @@ namespace WinFormsStudentCatalogWork
 
         }
 
-        private void bClear_Click(object sender, EventArgs e)
+        private void bClear_Click(object sender, EventArgs e)  // Очищення полів 
         {
             tbTheme.Text = "";
             tbStudent.Text = "";
@@ -244,15 +244,19 @@ namespace WinFormsStudentCatalogWork
             lbWorks.SelectedIndex = -1;
         }
 
-        private void bDelete_Click(object sender, EventArgs e)
+        private void bDelete_Click(object sender, EventArgs e)  // Видалення роботи
         {
             DataBase.View dView = new();
 
             bool isCourse = IndexWork(out int index);
             if (index == -1)
+            {
+                MessageBox.Show("Ви не обрали роботу");
                 return;
+            }
+                
 
-            Button clickButton = (Button)sender;
+            Control clickButton = (Control)sender;
             if (clickButton.Name == "bDelete"){
                 var result = MessageBox.Show("Ви впевнені, що хочете видалити з каталогу цю роботу?",
                     "Видалити роботу",
@@ -275,7 +279,7 @@ namespace WinFormsStudentCatalogWork
             ShowListBoxWorks();
         }
 
-        private void lbWorks_SelectedIndexChanged(object sender, EventArgs e)
+        private void lbWorks_SelectedIndexChanged(object sender, EventArgs e)  // Обрання роботи щоб змінити або добавити схожу
         {
             
             DataBase.View dView = new();

@@ -43,14 +43,16 @@
             bAdd = new Button();
             lbFilter = new ListBox();
             label1 = new Label();
+            bClear = new Button();
             SuspendLayout();
             // 
             // lvWorks
             // 
             lvWorks.Columns.AddRange(new ColumnHeader[] { id, theme, student, teacher, group, year, discipline, degree });
-            lvWorks.Location = new Point(182, 41);
+            lvWorks.Location = new Point(192, 41);
+            lvWorks.MultiSelect = false;
             lvWorks.Name = "lvWorks";
-            lvWorks.Size = new Size(1004, 264);
+            lvWorks.Size = new Size(994, 264);
             lvWorks.TabIndex = 0;
             lvWorks.UseCompatibleStateImageBehavior = false;
             lvWorks.View = View.Details;
@@ -102,9 +104,9 @@
             // 
             // tbSearch
             // 
-            tbSearch.Location = new Point(182, 12);
+            tbSearch.Location = new Point(192, 12);
             tbSearch.Name = "tbSearch";
-            tbSearch.Size = new Size(910, 23);
+            tbSearch.Size = new Size(900, 23);
             tbSearch.TabIndex = 1;
             // 
             // bSearch
@@ -115,13 +117,14 @@
             bSearch.TabIndex = 2;
             bSearch.Text = "Пошук";
             bSearch.UseVisualStyleBackColor = true;
+            bSearch.Click += bSearch_Click;
             // 
             // bAdd
             // 
             bAdd.Font = new Font("Segoe UI", 20F);
-            bAdd.Location = new Point(12, 171);
+            bAdd.Location = new Point(12, 185);
             bAdd.Name = "bAdd";
-            bAdd.Size = new Size(164, 134);
+            bAdd.Size = new Size(174, 120);
             bAdd.TabIndex = 3;
             bAdd.Text = "Управляти Каталогом";
             bAdd.UseVisualStyleBackColor = true;
@@ -133,8 +136,9 @@
             lbFilter.ItemHeight = 15;
             lbFilter.Location = new Point(12, 41);
             lbFilter.Name = "lbFilter";
-            lbFilter.Size = new Size(164, 124);
+            lbFilter.Size = new Size(174, 109);
             lbFilter.TabIndex = 4;
+            lbFilter.SelectedIndexChanged += lbFilter_SelectedIndexChanged;
             // 
             // label1
             // 
@@ -146,11 +150,24 @@
             label1.TabIndex = 5;
             label1.Text = "Пошук за:";
             // 
+            // bClear
+            // 
+            bClear.Location = new Point(12, 156);
+            bClear.Name = "bClear";
+            bClear.Size = new Size(174, 23);
+            bClear.TabIndex = 6;
+            bClear.Text = "Очиститити";
+            bClear.UseVisualStyleBackColor = true;
+            bClear.Click += bClear_Click;
+            // 
             // Form1
             // 
+            AcceptButton = bSearch;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = bClear;
             ClientSize = new Size(1198, 317);
+            Controls.Add(bClear);
             Controls.Add(label1);
             Controls.Add(lbFilter);
             Controls.Add(bAdd);
@@ -158,6 +175,7 @@
             Controls.Add(tbSearch);
             Controls.Add(lvWorks);
             Font = new Font("Segoe UI", 9F);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "Каталог студентських робіт";
@@ -181,5 +199,6 @@
         private ColumnHeader year;
         private ColumnHeader discipline;
         private ColumnHeader degree;
+        private Button bClear;
     }
 }

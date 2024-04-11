@@ -8,13 +8,13 @@ namespace ConsoleStudentCatalogWork
     internal class Program
     {
 
-        public static List<CourseWork> CourseWorks;
-        public static List<GraduateWork> GraduateWorks;
+        public static List<CourseWork> CourseWorks; // Каталок курсових робіт
+        public static List<GraduateWork> GraduateWorks;  // Каталог Дипломних робіт
 
 
         static void Main(string[] args)
         {
-            OutputEncoding = Encoding.UTF8;
+            OutputEncoding = Encoding.UTF8;  // Кодування для показу українських літер
 
             WriteLine("Каталог робіт");
 
@@ -24,10 +24,10 @@ namespace ConsoleStudentCatalogWork
             {
                 WriteLine($"\n0 - Вийти, 1 - Показати Курсові, 2 - Показати Дипломні, 3 - Добавити роботу, 4 - Оновити роботу, " +
                           $"\n5 - Пошук Роботи за призвищем студента, 6 - Пошук тем магістерських робіт за роком , 7 - Показати за абеткою," +
-                          $"\n8 - Пошук Роботи за призвищем Вчителя, 9 - Видалити роботу");
+                          $"\n8 - Пошук Роботи за призвищем Вчителя, 9 - Видалити роботу");  // Меню програми
                 try
                 {
-                    choice = int.Parse(ReadLine());
+                    choice = int.Parse(ReadLine()); 
                 }
                 catch (FormatException)
                 {
@@ -41,7 +41,7 @@ namespace ConsoleStudentCatalogWork
             } while (choice != 0);
         }
 
-        public static void InfoWorksUpdate()
+        public static void InfoWorksUpdate()  // Оновлення данних про роботи
         {
             View dView = new();
 
@@ -49,7 +49,7 @@ namespace ConsoleStudentCatalogWork
             GraduateWorks = dView.ShowDataGraduateWork();
         }
 
-        private static void HandleChoice(int ch)
+        private static void HandleChoice(int ch)  // Обробник вибору цифри
         {
             InfoWorksUpdate();
 
@@ -68,7 +68,7 @@ namespace ConsoleStudentCatalogWork
                     ChangeWork();
                     break;
                 case 5:
-                    SearchBy();
+                    SearchByStudent();
                     break;
                 case 6:
                     MasterDegreeSearchByYear();
@@ -82,24 +82,27 @@ namespace ConsoleStudentCatalogWork
                 case 9:
                     Delete();
                     break;
+                case 10:
+                    WriteLine(ReadLine());
+                    break;
             }
         }
 
-        private static void ShowCourse()
+        private static void ShowCourse()  // Показ курсових
         { 
             WriteLine("Курсові роботи:");
             foreach (var Cw in CourseWorks)
                 WriteLine(Cw);
         }
 
-        public static void ShowGraduate()
+        public static void ShowGraduate()  // Показ дипломних
         {
             WriteLine("\nДипломні роботи:");
             foreach (var Gw in GraduateWorks)
                 WriteLine(Gw);
         }
 
-        private static void AddWork()
+        private static void AddWork() // добавити роботу
         {
             int choice;
             WriteLine("Оберіть яку роботу добавити: 1 - Курсова 2 - Дипломна.");
@@ -129,12 +132,13 @@ namespace ConsoleStudentCatalogWork
             }
         }
 
-        private static void SendAddWork(bool isCourse = true)
+        private static void SendAddWork(bool isCourse = true)  // Надіслати якої роботи треба добавити
         {
             View dView = new();
 
             try
             {
+                // Користувач вводить загальні поля
                 WriteLine("Введіть тему роботи:");
                 string workTheme = ReadLine();
                 WriteLine("Введіть ПІБ студента:");
@@ -195,7 +199,7 @@ namespace ConsoleStudentCatalogWork
             }
         }
 
-        public static void Delete()
+        public static void Delete()  // Видалення роботи
         {
             int choice;
             WriteLine("Оберіть яку роботу Видалити: 1 - Курсова 2 - Дипломна.");
@@ -225,7 +229,7 @@ namespace ConsoleStudentCatalogWork
             }
         }
 
-        private static void DeleteSend(bool isCourse = true)
+        private static void DeleteSend(bool isCourse = true)  // Надіслання якої роботи треба видалити
         {
             try
             {
@@ -258,7 +262,7 @@ namespace ConsoleStudentCatalogWork
             }
         }
 
-        private static void SearchBy()
+        private static void SearchByStudent()  // Пошук роботи за прізвищем студента
         {
             WriteLine("Введіть прізвище:");
 
@@ -270,7 +274,7 @@ namespace ConsoleStudentCatalogWork
                 WriteLine(work);
         }
 
-        private static void ShowABC()
+        private static void ShowABC()   // Роботи по темі за абеткою
         {
             WriteLine("Роботи по темі за абеткою:\n");
             List<CreativeWork> works = [.. GraduateWorks, .. CourseWorks];
@@ -280,7 +284,7 @@ namespace ConsoleStudentCatalogWork
                 WriteLine(work.WorkTheme);
         }
 
-        private static void ChangeWork()
+        private static void ChangeWork()  // Змінити роботу
         {
             WriteLine("Оберіть яку роботу Змінити: 1 - Курсова 2 - Дипломна.");
             try
@@ -309,7 +313,7 @@ namespace ConsoleStudentCatalogWork
             }
         }
 
-        private static void SendChange(bool isCourse = true)
+        private static void SendChange(bool isCourse = true)  // Надіслати обрану роботу
         {
             try
             {
@@ -324,15 +328,18 @@ namespace ConsoleStudentCatalogWork
                 {
                     ShowCourse();
 
+                    int number = int.Parse(ReadLine());
+
                     courseWork = dView.ShowDataCourseWork()
-                        .First(c => c.Id == int.Parse(ReadLine()));
+                        .First(c => c.Id == number);
                 }
                 else
                 {
                     ShowGraduate();
+                    int number = int.Parse(ReadLine());
 
                     graduateWork = dView.ShowDataGraduateWork()
-                        .First(c => c.Id == int.Parse(ReadLine()));
+                        .First(c => c.Id == number);
                 }
 
                 WriteLine("Введіть тему роботи:");
@@ -347,6 +354,7 @@ namespace ConsoleStudentCatalogWork
                 int year = int.Parse(ReadLine());
                 WriteLine("Введіть Оцінку:");
                 int grade = int.Parse(ReadLine());
+
                 if (isCourse)
                 {
                     WriteLine("Оберіть дисціпліну:");
@@ -369,9 +377,12 @@ namespace ConsoleStudentCatalogWork
                 {
                     Degree[] degrees = [Degree.Бакалавр, Degree.Спеціаліст, Degree.Магістр];
                     WriteLine("Оберіть Кваліфікацію За номером:");
-                    foreach (var degree in degrees)
-                        Write($"{degree}, ");
-                    Degree degreeWork = degrees[int.Parse(ReadLine())];
+
+                    for (int i = 0; i < degrees.Length; i++)
+                    {
+                        Write($"{i + 1} - {degrees[i]}, ");
+                    }
+                    Degree degreeWork = degrees[int.Parse(ReadLine()) - 1];
 
                     //Добавляємо поля які користувач вказав вище для дипломної роботи
                     graduateWork.WorkTheme = workTheme;
@@ -395,13 +406,14 @@ namespace ConsoleStudentCatalogWork
             {
                 WriteLine(e.Message);
             }
-            catch
+            catch(Exception e)
             {
                 WriteLine("Id не знайдено.");
+                WriteLine(e.Message);
             }
         }
 
-        private static void MasterDegreeSearchByYear()
+        private static void MasterDegreeSearchByYear()   // Пошук магістерських робіт за роком
         {
             WriteLine("Оберіть число:");
             InfoWorksUpdate();
@@ -424,7 +436,7 @@ namespace ConsoleStudentCatalogWork
                 WriteLine(graduateWork);
         }
 
-        private static void SearchByTeacher()
+        private static void SearchByTeacher()   // Пошук за призвищем вчителя
         {
             WriteLine("Введіть прізвище:");
 
@@ -436,7 +448,7 @@ namespace ConsoleStudentCatalogWork
                 WriteLine(work);
         }
 
-        private static bool ValidateWork(CreativeWork work)
+        private static bool ValidateWork(CreativeWork work)   // Валідація полів які написав користувач
         {
             string pattern = @"^[A-Za-z\u0400-\u04FF\s]+$";
             return Regex.IsMatch(work.StudentFullName, pattern) &&

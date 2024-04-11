@@ -125,7 +125,7 @@
             tbTheme.Font = new Font("Segoe UI", 12F);
             tbTheme.Location = new Point(139, 12);
             tbTheme.Name = "tbTheme";
-            tbTheme.Size = new Size(332, 29);
+            tbTheme.Size = new Size(685, 29);
             tbTheme.TabIndex = 7;
             // 
             // tbStudent
@@ -133,7 +133,7 @@
             tbStudent.Font = new Font("Segoe UI", 12F);
             tbStudent.Location = new Point(139, 47);
             tbStudent.Name = "tbStudent";
-            tbStudent.Size = new Size(332, 29);
+            tbStudent.Size = new Size(685, 29);
             tbStudent.TabIndex = 9;
             // 
             // label2
@@ -151,7 +151,7 @@
             tbTeacher.Font = new Font("Segoe UI", 12F);
             tbTeacher.Location = new Point(139, 82);
             tbTeacher.Name = "tbTeacher";
-            tbTeacher.Size = new Size(332, 29);
+            tbTeacher.Size = new Size(685, 29);
             tbTeacher.TabIndex = 11;
             // 
             // label3
@@ -169,7 +169,7 @@
             tbGroup.Font = new Font("Segoe UI", 12F);
             tbGroup.Location = new Point(139, 117);
             tbGroup.Name = "tbGroup";
-            tbGroup.Size = new Size(332, 29);
+            tbGroup.Size = new Size(685, 29);
             tbGroup.TabIndex = 13;
             // 
             // label4
@@ -186,7 +186,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F);
-            label5.Location = new Point(511, 20);
+            label5.Location = new Point(941, 20);
             label5.Name = "label5";
             label5.Size = new Size(91, 21);
             label5.TabIndex = 14;
@@ -195,7 +195,7 @@
             // nudYear
             // 
             nudYear.Font = new Font("Segoe UI", 12F);
-            nudYear.Location = new Point(658, 12);
+            nudYear.Location = new Point(1088, 12);
             nudYear.Maximum = new decimal(new int[] { 2024, 0, 0, 0 });
             nudYear.Minimum = new decimal(new int[] { 1970, 0, 0, 0 });
             nudYear.Name = "nudYear";
@@ -206,7 +206,7 @@
             // nudGrade
             // 
             nudGrade.Font = new Font("Segoe UI", 12F);
-            nudGrade.Location = new Point(658, 47);
+            nudGrade.Location = new Point(1088, 47);
             nudGrade.Name = "nudGrade";
             nudGrade.Size = new Size(120, 29);
             nudGrade.TabIndex = 17;
@@ -215,7 +215,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 12F);
-            label6.Location = new Point(511, 55);
+            label6.Location = new Point(941, 55);
             label6.Name = "label6";
             label6.Size = new Size(64, 21);
             label6.TabIndex = 16;
@@ -225,7 +225,7 @@
             // 
             tcWorks.Controls.Add(tabPage1);
             tcWorks.Controls.Add(tabPage2);
-            tcWorks.Location = new Point(511, 82);
+            tcWorks.Location = new Point(941, 82);
             tcWorks.Name = "tcWorks";
             tcWorks.SelectedIndex = 0;
             tcWorks.Size = new Size(267, 107);
@@ -296,8 +296,10 @@
             // 
             // ControlWorks
             // 
+            AcceptButton = bAdd;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = bClear;
             ClientSize = new Size(1381, 450);
             Controls.Add(tcWorks);
             Controls.Add(nudGrade);
@@ -317,6 +319,7 @@
             Controls.Add(bChange);
             Controls.Add(bAdd);
             Controls.Add(lbWorks);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "ControlWorks";
             Text = "ControlWorks";
