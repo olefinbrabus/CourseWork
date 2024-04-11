@@ -90,8 +90,8 @@ namespace WinFormsStudentCatalogWork
         private void bAdd_Click(object sender, EventArgs e) // Відкриття форми для управління роботами
         {
             ControlWorks works = new();
-            if (works.ShowDialog() == DialogResult.OK)
-                ListViewNormalSorting();
+            works.ShowDialog();
+            ListViewNormalSorting();
 
         }
 

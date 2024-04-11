@@ -82,9 +82,6 @@ namespace ConsoleStudentCatalogWork
                 case 9:
                     Delete();
                     break;
-                case 10:
-                    WriteLine(ReadLine());
-                    break;
             }
         }
 

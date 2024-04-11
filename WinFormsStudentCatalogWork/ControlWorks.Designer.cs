@@ -299,7 +299,6 @@
             AcceptButton = bAdd;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            CancelButton = bClear;
             ClientSize = new Size(1381, 450);
             Controls.Add(tcWorks);
             Controls.Add(nudGrade);
